@@ -30,26 +30,40 @@ def create_login_account():
     # This function create a login account.
     username, password = username_and_password_input()
     salt = generate_salt()
+
+    print("Generated Salt:", salt)
+    
     hashed_password = hashing_password_method(password, salt)
+
+    print("Generated Hash:", hashed_password)
+    
     login_database[username] = [hashed_password, salt]
+    print("Account created successfully!")
     
 def login_attempt():
     # This function checks if user's detail exist
     username, password = username_and_password_input()
-    if (username in login_database.keys()):
+    if username in login_database.keys():
         # Checking if username exist in database
         user_hashed_password = login_database[username][0]
         user_salt = login_database[username][1]
-        if (user_hashed_password == hashing_password_method(password, user_salt)):
-            # Checking if password matches
-            print('Login Successful!')
+
+        generated_hash = hashing_password_method(password, user_salt)
+
+        print("Stored Hash:", user_hashed_password)
+        print("Generated Hash from Entered Password:", generated_hash)
+
+        if (user_hashed_password == generated_hash:
+            print("Login Successful!")
+            print("Hashes Match")
         else:
-            print('Wrong Password')
+            print("Login Failed")
+            print("Hashes Do Not Match")
     else:
         print("Username doesnt exist!")
         
 while True:
-    # Looping for user interaction
+    # Hoping for user interaction
     choice = input("Enter 1 to create account, 2 to login or 0 to exit: ")
     if (choice == "1"):
         create_login_account()
